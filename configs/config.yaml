@@ -1,0 +1,18 @@
+model:
+  name: "moonshotai/Kimi-K2.6"
+  type: "kimi"
+
+dataset:
+  name: "wikitext"
+  config: "wikitext-2-raw-v1"
+
+training:
+  output_dir: "./models/curiosipi-v1"
+  epochs: 1
+  batch_size: 1
+  accumulation_steps: 4
+  save_steps: 500
+
+inference:
+  max_length: 100
+  temperature: 0.7

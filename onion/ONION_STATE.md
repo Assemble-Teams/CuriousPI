@@ -268,7 +268,20 @@ Production remains blocked until evidence exists for:
 
 ---
 
-## 14. Canonical Success Principle
+## 14. Repository Truth — Cursor Audit Cycle 1 (2026-10-03)
+
+Audited at `Assemble-Teams/CuriousPI` / `onion-bootstrap` / `669c356debe998845e9d8785360692cc2b2b30b2`.
+
+- `/onion` contains documentation only. No Onion application code exists on any branch or ref.
+- Built: nothing. Wired: nothing. Proven: nothing. Commissioned / Production: not applicable.
+- The prototype described in `README.md` and `DELIVERY-AUDIT.md` is not in the repository and is unverifiable (DR-06).
+- No secrets, client/provider data or financial records are present. `/onion` is the only delta from `main`; CuriousPI is untouched.
+- Controlling risks: public, org-owned repository (DR-01); no stack/persistence/deployment (DR-02, DR-05); no Google project or LLM account under the practice (DR-03, DR-04).
+- Deliverables of this cycle: `CURSOR_AUDIT.md`, `PRD_TRACEABILITY.md`, `ARCHITECTURE_CURRENT.md`, `SPRINT_1_PROPOSAL.md`, `UI_UX_SYSTEM.md`, `AI_CAPABILITY_ARCHITECTURE.md`, `DECISION_REQUESTS.md`, `handoffs/2026-10-03-cursor-audit-cycle-1.md`.
+- Engineering priority (§12) is now: resolve DR-01…DR-07 → Sprint 0 skeleton → Sprint 1 slice (`SPRINT_1_PROPOSAL.md`). No broad migration starts before Founder review.
+- Agent roster unchanged in code (none exist). Design: Lead Qualification (A2), ATLAS Executive Briefing (A1), RAS Evidence/Quality (A1) first; Meeting Intelligence and Research sequenced after their Google/egress decisions.
+
+## 15. Canonical Success Principle
 
 Onion succeeds when it increases the quality, repeatability, safety, evidence discipline, and leverage of the consulting organization.
 

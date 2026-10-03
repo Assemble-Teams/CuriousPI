@@ -168,33 +168,34 @@ Enforced by a pure policy function `can(actor, verb, record) → allow | deny(re
    agents runtime → tool gateway → { module query APIs, llm provider adapter }
         │                                  │
         ▼                                  ▼
-[SQL store: pilot = embedded/managed SQL, migration-compatible with PostgreSQL]   [LLM provider API (server-side key)]
+[PostgreSQL dialect: PGlite (dev/test/early pilot) · hosted PostgreSQL (shared/staging/prod) behind one driver adapter]   [LLM provider API (server-side key)]
         │
 [Google Identity (OIDC, hd = practice domain)]   [Google Drive/Docs/Gmail: URL references only in Sprint 1]
 ```
 
 The public front door is a separate deployable (Later) that can only call `POST /intake` → `lead.status = new`.
 
-## 10. Recommended default stack (recommendation for DR-02; alternatives listed there)
+## 10. Canonical stack (DR-02 approved with refinement — `decisions/ADR-002-engineering-stack.md`)
 
-TypeScript end-to-end; Next.js (App Router, server actions/route handlers) or an equivalent full-stack React framework; Drizzle ORM with SQL migrations; SQLite-compatible embedded store for the pilot with the same schema runnable on PostgreSQL; Auth.js with the Google provider restricted by `hd`; Zod for input/output schemas; Vitest for unit/integration; Playwright for end-to-end and accessibility (`@axe-core/playwright`); structured JSON logging; a `FixtureLLMProvider` for deterministic tests and evals; OpenAI adapter as the first live provider (DR-04).
+TypeScript end-to-end; **Next.js App Router** with Server Components and server-side boundaries by default; React + an Onion-specific design system; **PostgreSQL dialect from day one**; **Drizzle ORM + Drizzle Kit** (schema in TypeScript, generated SQL migrations committed, no out-of-band production schema changes); **PGlite** for development, automated tests and early controlled pilot; hosted **PostgreSQL** for shared/staging/production behind a single driver adapter with no vendor coupling in the domain layer; **Better Auth** with Google Workspace sign-in restricted server-side to the authorized domain/account policy, identity-only scopes; application-controlled authorization with the seven authority verbs; Zod for input/output schemas; Vitest; Playwright + `@axe-core/playwright`; structured JSON logging; a fixture LLM provider for deterministic tests and evals; OpenAI adapter as the first live provider behind the provider-neutral control plane.
 
-Why this default: strongest ecosystem for the data-dense operational UI the PRD demands; one language across UI, commands, agent runtime and tests; clean isolation from the Python host project; Node 22 already available in the engineering environment; Google and OpenAI SDKs are first-class. Python is a viable alternative (FastAPI + HTMX/React) and is noted in DR-02 with its tradeoffs.
+Spike evidence for this combination (versions, checks, two gotchas: Better Auth schema must be CLI-generated; PGlite must be in `serverExternalPackages`) is recorded in ADR-002.
 
 ## 11. Environment layout
 
 | Environment | Purpose | Data | Credentials |
 |---|---|---|---|
-| `dev` (local) | engineering | synthetic fixtures | personal dev OAuth client, fixture LLM by default |
-| `preview` | AXE/RAS review of a branch | synthetic fixtures | preview OAuth client, fixture LLM or capped live key |
-| `pilot` | controlled real use (Commissioned) | real practice data | pilot OAuth client, live LLM key with budget, backups enabled |
+| `dev` (local) | engineering | synthetic fixtures; PGlite | personal dev OAuth client, fixture LLM by default |
+| `test` (CI) | automated tests, evals, migration checks | synthetic fixtures; PGlite in-memory, plus a PostgreSQL service for migration parity | none (fixture LLM only) |
+| `preview` | AXE/RAS review of a branch | synthetic fixtures; PGlite or hosted PostgreSQL | preview OAuth client, fixture LLM or capped live key |
+| `pilot` | controlled real use (Commissioned) | real practice data; PGlite (early single-user, with file backups) or hosted PostgreSQL | pilot OAuth client, live LLM key with budget, backups enabled |
 
 No `production` environment exists until launch gates are met.
 
 ## 12. What this document deliberately does not decide
 
-- Repository visibility and long-term host (DR-01)
-- Final stack and persistence (DR-02)
+- ~~Repository visibility and long-term host (DR-01)~~ — decided: ADR-001
+- ~~Final stack and persistence (DR-02)~~ — decided: ADR-002
 - Google Cloud project ownership for OIDC (DR-03)
 - LLM provider and billing (DR-04)
 - Deployment target (DR-05)

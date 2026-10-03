@@ -37,4 +37,7 @@ Not applicable on this branch — there is no runnable Onion artifact in the rep
 | `SPRINT_1_PROPOSAL.md` | Sprint 0 prerequisites and Sprint 1 vertical slice |
 | `UI_UX_SYSTEM.md` | personas, navigation, journeys, tokens, patterns, accessibility |
 | `AI_CAPABILITY_ARCHITECTURE.md` | agent control plane and first five capability specs |
-| `DECISION_REQUESTS.md` | open structured Founder decision requests (DR-01…DR-07) |
+| `DECISION_REQUESTS.md` | structured Founder decision requests (DR-01…DR-07) with status |
+| `decisions/ADR-001-repository-host.md`, `decisions/ADR-002-engineering-stack.md` | accepted architecture decision records |
+| `MIGRATION_RUNBOOK.md` | move to the private `onion` repository: owner steps, engineering steps, RAS boundary verification |
+| `SPRINT_0_EVIDENCE_PACK.md` | exact-SHA AXE/RAS evidence template for Sprint 0 (filled in the private repository) |

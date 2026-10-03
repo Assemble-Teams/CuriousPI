@@ -20,34 +20,43 @@ Sprint 0 is complete when a reviewer can sign in with a Workspace account on a p
 
 ---
 
-## 1. Sprint 0 — Decisions and skeleton
+## 1. Sprint 0 — Approved direction (Founder, 2026-10-03)
 
-### Inputs (Founder decisions)
+**Precondition:** the private `onion` repository exists and RAS has verified the boundary (`MIGRATION_RUNBOOK.md` §C). Sprint 0 is built there, never in CuriousPI. Sprint 0 contains no real client/provider data.
 
-| Decision | Needed for | Default recommendation |
+### Decision inputs
+
+| Decision | State | Effect on Sprint 0 |
 |---|---|---|
-| DR-01 Repository visibility / host | any code commit | New private repository owned by Uday / the practice; `/onion` docs migrate with history; CuriousPI untouched |
-| DR-02 Stack & persistence | skeleton | TypeScript full-stack + Drizzle + embedded SQL (pilot) with PostgreSQL-compatible schema |
-| DR-03 Google Cloud project for OIDC | sign-in | GCP project owned by the practice's Workspace, not Assemble Teams |
-| DR-04 LLM provider & billing | agents (Sprint 1) | OpenAI API under a practice-owned account with hard monthly cap; fixture provider for tests |
-| DR-05 Deployment target for preview/pilot | Wired | Any provider that supports private repo deploys, env secrets and a persistent volume or managed Postgres; chosen under the practice's own account |
+| DR-01 Repository | **Approved A** → ADR-001 | code lands only in the private repository |
+| DR-02 Stack | **Approved A + DB refinement** → ADR-002 | Next.js App Router · PostgreSQL dialect · Drizzle ORM/Kit · PGlite dev/test/early pilot · Better Auth + Google Workspace · provider-neutral control plane |
+| DR-03 GCP project for sign-in | open (owner action) | item 2 can be Built with a dev OAuth client and Wired only once the practice-owned project exists |
+| DR-04 LLM provider | approved in principle | not needed in Sprint 0 (no agents run) |
+| DR-05 Deployment target | deferred by Founder | Sprint 0 Wired state can be reached on a local/preview PGlite deployment; hosted PostgreSQL parity is proven in CI |
 
-### Skeleton deliverables (all under `onion/app`)
+### The fifteen Sprint 0 items, with maturity criteria
 
-| Component | Built when | Wired when | Proven when |
-|---|---|---|---|
-| App manifest, lockfile, `.gitignore`, `README` scoped to `onion/app` | files exist | CI installs from lockfile | `npm ci && npm test && npm run build` green in CI at recorded SHA |
-| Schema v0 + migrations (`ARCHITECTURE_CURRENT.md` §7) | migration files exist | migrations run against pilot store and PostgreSQL in CI matrix | migration up/down test passes on both |
-| Identity: Google Workspace OIDC, `hd` restriction, session | sign-in route exists | preview environment signs in a real Workspace user | e2e: allowed-domain user succeeds; other-domain user is rejected; session cookie flags verified |
-| Authorization policy engine (`can(actor, verb, record)`) | module exists | used by every command/query | exhaustive unit matrix (roles × verbs × scopes) + negative integration tests |
-| Audit event (append-only) | table + writer exist | every command emits one | test: command without audit event fails; DB role cannot UPDATE/DELETE audit rows |
-| Platform: config, structured logging, health endpoint, error capture | exist | preview emits logs/health | health check monitored; synthetic error appears in capture |
-| Synthetic fixture policy + seed (`fixtures/`) | seed script exists | dev/preview seeded | fixture lint: no real domains, names from a fictional list |
-| CI: lint, typecheck, unit, integration, e2e smoke, secret scan, dependency audit | workflow exists | runs on every PR | green at recorded SHA |
-| Backup/restore script | script exists | scheduled in pilot | restore drill documented with SHA and checksum |
-| Empty app shell: Today page with sign-out | route exists | reachable after sign-in | axe pass; keyboard-only navigation |
+Repository layout: the private repository is Onion-only, so the application lives at the repository root (`app/`, `src/`, `drizzle/`, `docs/` for the current `/onion` documents) rather than under an `onion/` prefix.
 
-Rollback for Sprint 0: delete `onion/app` and the preview deployment. No other system is affected.
+| # | Item (Founder list) | Built when | Wired when | Proven when |
+|---|---|---|---|---|
+| 1 | Next.js + TypeScript application skeleton | App Router project with `serverExternalPackages: ["@electric-sql/pglite"]`, strict TS, lockfile, scripts | `next build` + `next start` serve `/today` | CI build green at recorded SHA |
+| 2 | Google Workspace-restricted sign-in | Better Auth configured with Google only; server-side hosted-domain + allowlist hook; email/password disabled | real Workspace account signs in on preview via practice-owned OAuth client | e2e: allowed account succeeds; other-domain account rejected and audited; cookie flags `HttpOnly; Secure; SameSite=Lax` verified |
+| 3 | PostgreSQL schema v0 | Drizzle TypeScript schema per `ARCHITECTURE_CURRENT.md` §7 (+ Better Auth tables generated by `@better-auth/cli generate`) | used by app and tests | schema review by AXE; naming/ID/timestamp conventions lint |
+| 4 | Drizzle migrations | generated SQL committed; `drizzle-kit generate` is the only path | `migrate()` runs on boot in dev/test and as an explicit step in preview/pilot | migration applies cleanly to PGlite **and** to a PostgreSQL service in CI; `drizzle-kit check` detects drift |
+| 5 | PGlite development/test environment | in-memory for tests; on-disk `.pglite/` (git-ignored) for dev | seed + app run locally without external services | test suite runs in CI with zero network dependencies |
+| 6 | Deterministic authorization policy engine | pure `can(actor, verb, record) → allow \| deny(reason)` over VIEW·COMMENT·CONTRIBUTE·MANAGE·APPROVE·DELEGATE·ADMINISTER | every query/command calls it; no route bypass | property: no command handler reachable without a policy call (static check) |
+| 7 | Comprehensive authorization tests | exhaustive matrix roles × verbs × record scopes + negative integration tests | runs in CI | 100% of matrix cells asserted; agents never `APPROVE/DELEGATE/ADMINISTER` |
+| 8 | Append-only audit-event model | `audit_event` table, typed actor, `operation_key` unique, PostgreSQL trigger forbidding UPDATE/DELETE | every command emits exactly one event | tests: UPDATE/DELETE raise; duplicate `operation_key` rejected; event present for every command |
+| 9 | Fictional/synthetic development fixtures | fixture set with obviously fictional organizations/people (`*.example.invalid` domains) and a fixture lint | seeds dev/preview | lint passes; no fixture resembles a real entity |
+| 10 | CI | lint, typecheck, unit, integration, migration parity, e2e smoke, a11y smoke | runs on every PR; required check on `main` | green at recorded SHA |
+| 11 | Secret scanning | GitHub push protection + a scanner in CI; `.env.example` only | blocks pushes | test commit with a dummy token pattern is rejected (documented, then reverted) |
+| 12 | Backup/export procedure appropriate to the pilot | script: consistent dump (`pg_dump`-equivalent for PGlite via `pglite` dump / SQL export) + JSON export; restore script | scheduled where a pilot instance exists | restore drill into a clean instance; row counts and checksums match; recorded with SHA |
+| 13 | Operational `/today` shell | app shell (left rail, top bar with environment badge, sign-out), `/today` with empty "Needs you / Due / New leads" sections and honest empty states | reachable only when signed in | axe zero serious/critical; keyboard-only pass; 390px layout |
+| 14 | Error/logging foundation | structured JSON logger with `request_id`/`operation_key`; error boundary pages with error id; `/health` | logs emitted in preview; health polled | synthetic error visible in logs with id; health returns schema version |
+| 15 | AXE + RAS evidence pack | `SPRINT_0_EVIDENCE_PACK.md` filled | — | every row cites command, SHA, result; RAS reproduces |
+
+Rollback for Sprint 0: the repository is new; rollback is deleting the preview instance and store. Nothing else is affected.
 
 ---
 

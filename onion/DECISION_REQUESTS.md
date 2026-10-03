@@ -5,15 +5,15 @@
 **Format:** `CURSOR_CONTINUATION_BRIEF.md` §3  
 **Resolution rule:** each request is closed by Uday's recorded decision; the outcome is then encoded as an ADR under `onion/decisions/` and reflected in `ONION_STATE.md`. Until then, dependent work does not start.
 
-| ID | Decision | Blocks | Founder decision required |
+| ID | Decision | Blocks | Status (2026-10-03, Founder) |
 |---|---|---|---|
-| DR-01 | Repository visibility and long-term host | all application code | yes |
-| DR-02 | Technology stack and pilot persistence | Sprint 0 | yes |
-| DR-03 | Google Cloud project for Workspace sign-in | Sprint 0 identity | yes (new account/service) |
-| DR-04 | LLM provider and billing | Sprint 1 agents | yes (paid service) |
-| DR-05 | Deployment target for preview/pilot | Wired state | yes (new account/service) |
-| DR-06 | Disposition of the off-repository prototype and of `DELIVERY-AUDIT.md` claims | documentation truth | yes |
-| DR-07 | Sprint 1 scope confirmation (internal lead entry only; three capabilities) | Sprint 1 | yes |
+| DR-01 | Repository visibility and long-term host | all application code | **APPROVED — option A.** Encoded as `decisions/ADR-001-repository-host.md`; execution via `MIGRATION_RUNBOOK.md`. Repository creation is an account-owner action (A1–A4). |
+| DR-02 | Technology stack and pilot persistence | Sprint 0 | **APPROVED — option A with database refinement:** PostgreSQL dialect from day one, PGlite (not SQLite) for dev/test/early pilot, Drizzle ORM + Kit, Better Auth + Google Workspace sign-in, Next.js App Router. Encoded as `decisions/ADR-002-engineering-stack.md` with spike evidence. |
+| DR-03 | Google Cloud project for Workspace sign-in | Sprint 0 identity | **Open — implied by DR-02 (Google Workspace sign-in, identity-only scopes) but the project must still be created by Uday under the practice's Workspace.** |
+| DR-04 | LLM provider and billing | Sprint 1 agents | **Approved in principle** ("OpenAI may power initial capabilities; roles must not equal a provider"). Account/billing cap and data-handling acceptance still required before Wired. |
+| DR-05 | Deployment target for preview/pilot | Wired state | **Open — deferred by Founder until private repository and deployment account exist.** Domain layer must not couple to a managed-Postgres vendor. |
+| DR-06 | Disposition of the off-repository prototype and of `DELIVERY-AUDIT.md` claims | documentation truth | **Open.** |
+| DR-07 | Sprint 1 scope confirmation (internal lead entry only; three capabilities) | Sprint 1 | **APPROVED** as Sprint 1 direction; Lead Qualification A2; Uday is approval authority; explicit deferral list recorded in `ONION_STATE.md` §11/§14. |
 
 ---
 

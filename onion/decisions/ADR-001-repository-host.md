@@ -15,8 +15,8 @@ Onion moves out of `Assemble-Teams/CuriousPI` into its own **private GitHub repo
 3. CuriousPI code is not migrated.
 4. Only Onion source, documentation, architecture decisions and relevant Onion history migrate.
 5. Preserve useful authorship/decision history where practical.
-6. Migration does **not** make previously public commits confidential: everything pushed to `onion-bootstrap` and `cursor/onion-audit-foundation-f6d7` is, and remains, public history. Nothing confidential was pushed (audit scan clean at `669c356` and at this cycle's commits), and nothing confidential may be pushed to CuriousPI from now on.
-7. After the private repository is verified: close CuriousPI PR #1 with a neutral migration note; delete the public `onion-bootstrap` branch (PR #2 closes with its base).
+6. Migration does **not** make previously public commits confidential: everything pushed to `onion-bootstrap` and `cursor/onion-audit-foundation-f6d7` (PRD, rules, briefs, audit, architecture, UI/UX system, AI capability architecture, decision records) is, and remains, public history. **Founder classification: this material is treated as previously disclosed.** No secrets were committed (scans clean at `669c356` and at every cycle-1 commit), so there is **no credential-rotation incident**. Nothing confidential may be pushed to CuriousPI from now on.
+7. After the private repository is verified: close CuriousPI PR #1 with the neutral note *"Onion development has moved to a private repository."*; delete the public `onion-bootstrap` branch (PR #2 closes with its base).
 8. Do not publish the private repository URL in CuriousPI.
 9. Do not merge Onion into CuriousPI `main`.
 10. **RAS must verify the private-repository boundary before any real client/provider data or confidential operating material is added.**

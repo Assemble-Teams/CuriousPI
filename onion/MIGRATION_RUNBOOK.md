@@ -71,9 +71,9 @@ Only after C1–C8: real client/provider data, confidential templates, prompts w
 
 ## D. Neutral closing note for CuriousPI PR #1
 
-> Closing without merge. The Onion bootstrap documentation staged on `onion-bootstrap` has been moved to its own repository by founder decision (2026-10-03). CuriousPI `main` is unaffected. This branch will be deleted.
+> Onion development has moved to a private repository. Closing without merge; CuriousPI `main` is unaffected and the `onion-bootstrap` branch will be deleted.
 
-No URL, no description of Onion's purpose beyond "its own repository".
+No URL, no description of Onion's purpose. The material already published on this branch is classified by the Founder as previously disclosed (ADR-001 req. 6); the note does not need to address it.
 
 ## E. What this runbook deliberately does not do
 

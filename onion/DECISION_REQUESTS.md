@@ -56,13 +56,13 @@
 **Observed evidence:** `CURSOR_AUDIT.md` §1; Node 22 and Python 3.12 available; no constraints in PRD beyond "modular monolith" and "PostgreSQL later".
 
 **Options:**
-- **A. TypeScript end-to-end (recommended):** full-stack React framework (Next.js App Router or equivalent), Drizzle ORM + SQL migrations, embedded SQLite-compatible store for the pilot with the same schema on PostgreSQL, Auth.js Google provider, Zod, Vitest, Playwright + axe.
+- **A. TypeScript end-to-end (recommended):** full-stack React framework (Next.js App Router or equivalent), Drizzle ORM + SQL migrations, ~~embedded SQLite-compatible store for the pilot with the same schema on PostgreSQL~~, Auth.js Google provider, Zod, Vitest, Playwright + axe. *Founder refinement (accepted): the struck claim was wrong — Drizzle schemas are dialect-specific. Approved form: PostgreSQL dialect from day one with PGlite for dev/test/early pilot and hosted PostgreSQL later; Better Auth (with verified `hd` claim enforcement) instead of Auth.js. See ADR-002.*
 - **B. Python:** FastAPI + SQLAlchemy/Alembic + Jinja/HTMX or a separate React front end; pytest; Playwright.
 - **C. Google Apps Script + Sheets as system of record.** Lowest infrastructure, but no real authorization model, weak audit, poor UI for approvals/agents; fails CURSOR_RULES security principles for shared persistence.
 
 **Tradeoffs:** A: one language for UI, commands, agent runtime and tests; strongest component ecosystem for tables/forms/a11y; clean separation from the Python host. B: fine for agents, weaker for the UI mandate, two languages if React is used, tooling collision risk with root Python project. C: fast start, dead end for authority/audit.
 
-**Persistence sub-decision:** embedded SQL file for the pilot (single process, trivially backed up, zero extra service) vs managed PostgreSQL from day one (one more paid/managed service, but no later switch). Recommendation: embedded for Sprint 0/1 **only if** the deployment target (DR-05) offers a persistent volume with snapshots; otherwise managed PostgreSQL from the start. Either way the schema is written once through the ORM and CI runs migrations on both.
+**Persistence sub-decision (as decided):** PGlite — real PostgreSQL embedded in Node — for local development, automated tests and early single-user/controlled pilot; managed PostgreSQL when Onion reaches shared/staging use; provider chosen later, with no vendor coupling in the domain layer. The schema is written once in Drizzle's PostgreSQL dialect and CI runs migrations against both PGlite and a PostgreSQL service for parity.
 
 **Recommendation:** A, with the persistence rule above.
 

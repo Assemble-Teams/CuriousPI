@@ -18,7 +18,11 @@
 
 ## B. Engineering steps (Cursor, inside the empty `onion` repository)
 
+**B0. Execution context (verified constraint, 2026-10-04).** Section B can only run from a Cursor session whose GitHub installation covers the private `onion` repository. The CuriousPI session's token covers exactly one repository (`gh api /installation/repositories` → `["Assemble-Teams/CuriousPI"]`), and the private repository is not visible to it (`gh repo view` / `git ls-remote` → not found). Attempting B from CuriousPI is therefore impossible, not merely disallowed. Start the session **from the `onion` repository** after installing the Cursor GitHub App there (A3–A4).
+
 Source of truth for the migration is the tip of `cursor/onion-audit-foundation-f6d7` (which contains all of `onion-bootstrap` plus audit-cycle commits). If Uday merges PR #2 into `onion-bootstrap` first, use `onion-bootstrap` instead; the result is identical.
+
+Reference values from the last dry run in CuriousPI (source tip `111bea9b19b967f23251f10ef7baa9af8c2e9205`): extracted root commit `b632bfcb289248b25c2cabd17ecf260ff666c53d` ("Onion bootstrap: add README.md", Uday T), 19 commits (9 Uday T, 10 Cursor Agent), extracted tree `b514dddc38bf494b70f336a2e741dbad7b6d9e5e` equal to `111bea9:onion`, zero non-Onion paths. `git subtree split` is deterministic, so the root commit SHA must match exactly; the count and tree will advance with any later commits on the source branch, and the tree-equality test in B3 remains the authoritative check.
 
 ```bash
 # B1. Fetch the public source (read-only; CuriousPI is public)
@@ -49,7 +53,8 @@ Tested locally on 2026-10-03 against base `a9e2130`: `git subtree split --prefix
 
 Post-push in the new repository (first commits on `main`, by PR):
 
-- B6. Add a root `README.md` stating that Onion is the only product in the repository and pointing to the document map; add `.gitignore` (Node), `.github/workflows` with secret scan and dependency audit (Sprint 0 item 10–11), `CODEOWNERS` (Uday).
+- B6. Add a root `README.md` stating that Onion is the only product in the repository and pointing to the document map; add `.gitignore` (Node), `.github/workflows` with secret scan and dependency audit (Sprint 0 item 10–11), `CODEOWNERS` (Uday). Move the migrated documents under `docs/` in the same PR (history is preserved through the rename).
+- B6b. **Prototype reference (Founder instruction, 2026-10-04).** If Uday supplies the old `index.html` / `site.html` prototype, place it under `reference/prototype-v0/` with a `README.md` stating: private, non-production **design reference only**; not deployed, not built, not tested, not the application architecture; excluded from CI, lint, type-check and deployment; may be deleted after Sprint 1 without ceremony. The files are not in CuriousPI and cannot be migrated by section B; they arrive only via Uday. This closes DR-06 as option A.
 - B7. Record in `ONION_STATE.md` §14: migration date, source SHA, destination first SHA.
 - B8. Update `REPOSITORY_DECISION.md` status to "superseded by ADR-001; migrated".
 - B9. Begin Sprint 0 only after section C passes.

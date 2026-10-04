@@ -268,7 +268,30 @@ Production remains blocked until evidence exists for:
 
 ---
 
-## 14. Canonical Success Principle
+## 14. Repository Truth — Cursor Audit Cycle 1 (2026-10-03)
+
+Audited at `Assemble-Teams/CuriousPI` / `onion-bootstrap` / `669c356debe998845e9d8785360692cc2b2b30b2`.
+
+- `/onion` contains documentation only. No Onion application code exists on any branch or ref.
+- Built: nothing. Wired: nothing. Proven: nothing. Commissioned / Production: not applicable.
+- The prototype described in `README.md` and `DELIVERY-AUDIT.md` is not in the repository and is unverifiable (DR-06).
+- No secrets, client/provider data or financial records are present. `/onion` is the only delta from `main`; CuriousPI is untouched.
+- Controlling risks: public, org-owned repository (DR-01); no stack/persistence/deployment (DR-02, DR-05); no Google project or LLM account under the practice (DR-03, DR-04).
+- Deliverables of this cycle: `CURSOR_AUDIT.md`, `PRD_TRACEABILITY.md`, `ARCHITECTURE_CURRENT.md`, `SPRINT_1_PROPOSAL.md`, `UI_UX_SYSTEM.md`, `AI_CAPABILITY_ARCHITECTURE.md`, `DECISION_REQUESTS.md`, `handoffs/2026-10-03-cursor-audit-cycle-1.md`.
+- Engineering priority (§12) is now: resolve DR-01…DR-07 → Sprint 0 skeleton → Sprint 1 slice (`SPRINT_1_PROPOSAL.md`). No broad migration starts before Founder review.
+- Agent roster unchanged in code (none exist). Design: Lead Qualification (A2), ATLAS Executive Briefing (A1), RAS Evidence/Quality (A1) first; Meeting Intelligence and Research sequenced after their Google/egress decisions.
+
+### Founder decisions recorded 2026-10-03 (same day, later session)
+
+- **DR-01 A approved** → `decisions/ADR-001-repository-host.md`. Onion moves to a private `onion` repository outside the Assemble Teams organization. Execution: `MIGRATION_RUNBOOK.md` (owner steps A, engineering steps B, RAS boundary verification C). Subtree extraction tested: Onion-only history, authorship preserved, tree identical. After verification: close CuriousPI PR #1 with a neutral note, delete `onion-bootstrap`; never publish the private URL in CuriousPI; never merge into CuriousPI `main`.
+- **DR-02 A approved with database refinement** → `decisions/ADR-002-engineering-stack.md`. Next.js App Router · TypeScript · PostgreSQL dialect day one · Drizzle ORM/Kit · PGlite for dev/test/early pilot (no SQLite) · hosted PostgreSQL later with no vendor coupling · Better Auth + Google Workspace sign-in, identity-only scopes · application-controlled authorization (VIEW/COMMENT/CONTRIBUTE/MANAGE/APPROVE/DELEGATE/ADMINISTER) · provider-neutral Agent Control Plane. Stack spike passed outside the repo (versions and gotchas in ADR-002).
+- **Sprint 0 direction approved** (15 items, `SPRINT_1_PROPOSAL.md` §1; evidence template `SPRINT_0_EVIDENCE_PACK.md`). Built only in the private repository after RAS boundary verification; no real client/provider data.
+- **Sprint 1 direction approved**: Lead → Qualification (A2 Propose) → Human Review (Uday) → Organization/Opportunity → Evidence → Next Action → ATLAS Brief → independent RAS Check.
+- **Explicitly deferred by Founder**: public intake, generic AI chat, client/provider portal, Gmail automation, broad Drive access, Meeting Intelligence, autonomous outbound communication, autonomous commercial action, SaaS signup, billing subscriptions, multi-tenant productization, unnecessary microservices.
+- Still open: DR-03 (practice-owned Google Cloud project), DR-04 account/billing cap, DR-05 deployment target, DR-06 prototype disposition.
+- Access fact: the CuriousPI Cursor agent token is a GitHub App installation token scoped to CuriousPI; it cannot create or push to the new repository. Repository creation and Cursor app installation are Uday's actions (runbook A1–A4).
+
+## 15. Canonical Success Principle
 
 Onion succeeds when it increases the quality, repeatability, safety, evidence discipline, and leverage of the consulting organization.
 

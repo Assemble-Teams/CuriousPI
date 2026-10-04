@@ -1,5 +1,8 @@
 # Onion — Delivery Audit
 
+> **Cursor audit notice — 2026-10-03, `onion-bootstrap` @ `669c356`.**
+> The rows below that describe a prototype (`index.html`, `site.html`, dashboard, leads, engagements, delivery, finance, growth, templates, backup/export, light/dark, public front door, project submission, Google source links) refer to artifacts that are **not present in this repository on any branch or ref**. They were reported by a prior session and are **not verifiable here**. They must not be cited as Built/Wired/Proven evidence. The repository-verified matrix is `PRD_TRACEABILITY.md` (0 Built / 0 Wired / 0 Proven at this SHA). Rows stating "No" remain accurate. Disposition of the off-repository prototype is Founder decision DR-06 in `DECISION_REQUESTS.md`. This table is retained as a historical record and is superseded, not deleted.
+
 Status model: **Built ≠ Wired ≠ Proven**.
 
 | Deliverable | Built | Wired | Proven | Notes / next gate |

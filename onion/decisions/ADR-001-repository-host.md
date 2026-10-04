@@ -32,6 +32,10 @@ See `CURSOR_AUDIT.md` §4 and F-01/F-04: public visibility blocks application co
 - Migration procedure and verification: `MIGRATION_RUNBOOK.md`. History is extracted with `git subtree split --prefix=onion`; tested locally on 2026-10-03: 15 Onion-only commits, authorship preserved, extracted tree identical to `onion/` (`74bfdd13…` at base `a9e2130`).
 - `REPOSITORY_DECISION.md` remains as the historical record of the bootstrap exception.
 
+## Ownership sequencing (Founder Council recommendation, 2026-10-04)
+
+Create `onion` under Uday's personal GitHub account **today**; transfer ownership to a dedicated consulting-practice organization later if one is established. Getting Onion out of the public organization repository before application code exists takes priority over final ownership. Branch protection on `main` (PRs required, no force-push/deletion, applied to admins where practical) can be configured before the branch exists; it requires an eligible GitHub plan for private repositories, and secret/push protection likewise depends on plan — record what was actually enabled in runbook §C3.
+
 ## Reversibility
 
-High. A repository can be moved again; history is preserved by the split.
+High. A repository can be moved again (including a later ownership transfer); history is preserved by the split.

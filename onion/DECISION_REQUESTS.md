@@ -12,7 +12,7 @@
 | DR-03 | Google Cloud project for Workspace sign-in | Sprint 0 identity | **Open — implied by DR-02 (Google Workspace sign-in, identity-only scopes) but the project must still be created by Uday under the practice's Workspace.** |
 | DR-04 | LLM provider and billing | Sprint 1 agents | **Approved in principle** ("OpenAI may power initial capabilities; roles must not equal a provider"). Account/billing cap and data-handling acceptance still required before Wired. |
 | DR-05 | Deployment target for preview/pilot | Wired state | **Open — deferred by Founder until private repository and deployment account exist.** Domain layer must not couple to a managed-Postgres vendor. |
-| DR-06 | Disposition of the off-repository prototype and of `DELIVERY-AUDIT.md` claims | documentation truth | **Open.** |
+| DR-06 | Disposition of the off-repository prototype and of `DELIVERY-AUDIT.md` claims | documentation truth | **APPROVED (2026-10-04) — option A.** Keep `index.html` / `site.html` only as a **private, non-production design reference** under `reference/prototype-v0/` in the private repository. Not the implementation base; never deployed; its localStorage architecture is not migrated into Onion. `DELIVERY-AUDIT.md` rows remain "reported, superseded". Execution: `MIGRATION_RUNBOOK.md` §B6b (files supplied by Uday). |
 | DR-07 | Sprint 1 scope confirmation (internal lead entry only; three capabilities) | Sprint 1 | **APPROVED** as Sprint 1 direction; Lead Qualification A2; Uday is approval authority; explicit deferral list recorded in `ONION_STATE.md` §11/§14. |
 
 ---
